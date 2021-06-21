@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-19 15:14:49
- * @LastEditTime: 2021-06-20 21:04:58
+ * @LastEditTime: 2021-06-22 00:08:55
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/home/index.vue
@@ -39,8 +39,8 @@
                 :to="{
                   name: 'profile',
                   params: {
-                    userId: article.author.username,
-                  },
+                    userId: article.author.username
+                  }
                 }"
               >
                 <img :src="article.author.image" />
@@ -50,8 +50,8 @@
                   :to="{
                     name: 'profile',
                     params: {
-                      userId: article.author.username,
-                    },
+                      userId: article.author.username
+                    }
                   }"
                   class="author"
                   >{{ article.author.username }}</nuxt-link
@@ -71,8 +71,8 @@
               :to="{
                 name: 'article',
                 params: {
-                  slug: article.slug,
-                },
+                  slug: article.slug
+                }
               }"
             >
               <h1>{{ article.title }}</h1>
@@ -83,10 +83,24 @@
           <!-- 分页列表 -->
           <nav>
             <ul class="pagination">
-              <li class="page-item ng-scope active">
-                <a class="page-link ng-binding" href="">1</a>
+              <li
+                v-for="item in totalPage"
+                :key="item"
+                class="page-item"
+                :class="{ active: page === item }"
+              >
+                <nuxt-link
+                  class="page-link"
+                  :to="{
+                    name: 'home',
+                    query: {
+                      page: item
+                    }
+                  }"
+                  >{{ item }}</nuxt-link
+                >
               </li>
-              <li class="page-item ng-scope"></li>
+              <li class="page-item"></li>
             </ul>
           </nav>
         </div>
@@ -96,14 +110,7 @@
             <p>Popular Tags</p>
 
             <div class="tag-list">
-              <a href="" class="tag-pill tag-default">programming</a>
-              <a href="" class="tag-pill tag-default">javascript</a>
-              <a href="" class="tag-pill tag-default">emberjs</a>
-              <a href="" class="tag-pill tag-default">angularjs</a>
-              <a href="" class="tag-pill tag-default">react</a>
-              <a href="" class="tag-pill tag-default">mean</a>
-              <a href="" class="tag-pill tag-default">node</a>
-              <a href="" class="tag-pill tag-default">rails</a>
+              <nuxt-link v-for="item in tags" :key="item" to="" class="tag-pill tag-default">{{ item }}</nuxt-link>
             </div>
           </div>
         </div>
@@ -113,22 +120,32 @@
 </template>
 
 <script>
-import { getArticles } from "@/api/article";
+import { getArticles, getTags } from '@/api/article'
 export default {
-  name: "HomeIndex",
+  name: 'HomeIndex',
+  watchQuery: ['page'],
   async asyncData({ query }) {
-    const page = Number(query.page || 1);
-    const limit = 2;
+    const page = Number(query.page || 1)
+    const limit = 20
     const { data } = await getArticles({
       limit,
-      offset: (page - 1) * 2, //跳过前xxx条取数据
-    });
+      offset: (page - 1) * 2 //跳过前xxx条取数据
+    })
+    const { data: tagData } = await getTags()
     return {
       articles: data.articles,
       articlesCount: data.articlesCount,
-    };
+      tags: tagData.tags,
+      limit,
+      page
+    }
   },
-};
+  computed: {
+    totalPage() {
+      return Math.ceil(this.articlesCount / this.limit)
+    }
+  }
+}
 </script>
 
 <style></style>
