@@ -1,13 +1,13 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 15:58:03
- * @LastEditTime: 2021-06-23 11:27:25
- * @LastEditors: lunarJan
+ * @LastEditTime: 2021-06-20 16:01:33
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/api/user.js
  */
 
-import { request } from '@/plugins/request';
+import request from '@/utils/request'
 
 // 用户登录
 export const login = data => {

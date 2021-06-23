@@ -1,8 +1,5 @@
 
 export default {
-    server: {
-        port: 3333 // 默认: 3000
-    },
     router: {
         linkActiveClass: 'active',
         // 自定义路由表规则
@@ -65,9 +62,5 @@ export default {
             //   path: '*',
             // })
         }
-    },
-    // 注册插件
-    plugins: [
-        '~/plugins/request.js' // 波浪线表示从根目录开始
-    ]
+    }
 }

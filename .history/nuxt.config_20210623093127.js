@@ -65,9 +65,5 @@ export default {
             //   path: '*',
             // })
         }
-    },
-    // 注册插件
-    plugins: [
-        '~/plugins/request.js' // 波浪线表示从根目录开始
-    ]
+    }
 }
