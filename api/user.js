@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 15:58:03
- * @LastEditTime: 2021-06-23 11:27:25
+ * @LastEditTime: 2021-06-24 15:48:54
  * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/api/user.js
@@ -22,6 +22,14 @@ export const login = data => {
 export const register = data => {
     return request({
         method: 'POST',
+        url: '/api/users',
+        data
+    })
+}
+// 用户更新信息
+export const updateUser = data => {
+    return request({
+        method: 'PUT',
         url: '/api/users',
         data
     })

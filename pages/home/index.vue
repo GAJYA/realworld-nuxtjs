@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-19 15:14:49
- * @LastEditTime: 2021-06-23 00:21:25
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-24 13:13:39
+ * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/home/index.vue
 -->
@@ -87,11 +87,15 @@
                   class="author"
                   >{{ article.author.username }}</nuxt-link
                 >
-                <span class="date">{{ article.createdAt }}</span>
+                <span class="date">{{
+                  article.createdAt | date('MMM DD, YYYY')
+                }}</span>
               </div>
               <button
                 class="btn btn-outline-primary btn-sm pull-xs-right"
                 :class="{ active: article.favorited }"
+                @click="onFavorite(article)"
+                :disabled="article.loadingArticle"
               >
                 <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
@@ -166,7 +170,13 @@
 </template>
 
 <script>
-import { getArticles, getTags, getFeedArticles } from '@/api/article'
+import {
+  getArticles,
+  getTags,
+  getFeedArticles,
+  setFavorite,
+  unFavorite
+} from '@/api/article'
 import { mapState } from 'vuex'
 export default {
   name: 'HomeIndex',
@@ -193,6 +203,9 @@ export default {
     ])
     const { articles, articlesCount } = articleRes.data
     const { tags } = tagRes.data
+    articles.forEach(article => {
+        article.loadingArticle = false
+    })
     return {
       articles,
       articlesCount,
@@ -208,6 +221,22 @@ export default {
     totalPage() {
       return Math.ceil(this.articlesCount / this.limit)
     }
+  },
+  methods: {
+      async onFavorite (article) {
+          article.loadingArticle = true
+          console.log(article);
+          if (article.favorited) {
+              await unFavorite(article.slug)
+              article.favorited = false
+              article.favoritesCount -= 1
+          } else {
+              await setFavorite(article.slug)
+              article.favorited = true
+              article.favoritesCount += 1
+          }
+          article.loadingArticle = false
+      }
   }
 }
 </script>

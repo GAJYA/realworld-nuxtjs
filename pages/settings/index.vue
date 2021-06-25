@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-20 14:46:29
- * @LastEditTime: 2021-06-20 20:03:58
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-24 15:57:09
+ * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/settings/index.vue
 -->
@@ -62,12 +62,25 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 export default {
   middleware: 'authenticated', // 在路由匹配组件渲染之前会先执行中间件处理，如果有多个中间件可以写成数组的形式
-
-    name: "Settings"
-};
+  name: 'Settings',
+  data() {
+    return {
+        
+    }
+  },
+  computed: {
+    ...mapState(['user'])
+  },
+  methods: {
+    async updateUser() {
+      const params = {}
+      await updateUser(params)
+    }
+  }
+}
 </script>
 
-<style>
-</style>
+<style></style>
