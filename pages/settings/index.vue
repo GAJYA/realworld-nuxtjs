@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-20 14:46:29
- * @LastEditTime: 2021-06-27 23:05:03
+ * @LastEditTime: 2021-06-28 01:31:23
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/settings/index.vue
@@ -56,6 +56,7 @@
                 />
               </fieldset>
               <button
+                type="button"
                 class="btn btn-lg btn-primary pull-xs-right"
                 @click="onUser"
               >
@@ -83,9 +84,7 @@ export default {
   name: 'Settings',
   data() {
     return {
-      users: {
-        password: '',
-      }
+      users: { password: '' }
     }
   },
   computed: {
@@ -93,11 +92,26 @@ export default {
   },
   mounted() {
     let { email, username, password, image, bio } = this.user
-    this.users = Object.assign({}, this.users, { email, username, password, image, bio }) 
+    this.users = Object.assign({}, this.users, {
+      email,
+      username,
+      password,
+      image,
+      bio
+    })
   },
   methods: {
     async onUser() {
-      await updateUser(this.users)
+      const { data } = await updateUser({
+        user: this.users
+      })
+      this.$store.commit('setUser', data.user)
+      this.$router.push({
+        name: 'profile',
+        params: {
+          userId: data.user.username
+        }
+      })
     },
     // 退出登录
     logout() {

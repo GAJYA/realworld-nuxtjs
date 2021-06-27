@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 15:58:03
- * @LastEditTime: 2021-06-24 15:48:54
- * @LastEditors: lunarJan
+ * @LastEditTime: 2021-06-28 01:22:43
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/api/user.js
  */
@@ -37,7 +37,7 @@ export const getUserDetail = username => {
 export const updateUser = data => {
     return request({
         method: 'PUT',
-        url: '/api/users',
+        url: '/api/user',
         data
     })
 }

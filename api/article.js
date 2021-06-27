@@ -1,7 +1,7 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 20:23:41
- * @LastEditTime: 2021-06-27 23:16:48
+ * @LastEditTime: 2021-06-28 01:24:47
  * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/api/article.js
@@ -95,9 +95,9 @@ export const getArticleComments  = slug => {
     })
 }
 // 删除文章评论
-export const deleteArticleComments  = slug => {
+export const deleteArticleComments  = (slug, id) => {
     return request({
         method: 'DELETE',
-        url: `/api/articles/${slug}/comments`,
+        url: `/api/articles/${slug}/comments/${id}`,
     })
 }
