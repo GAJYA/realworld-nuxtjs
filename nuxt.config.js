@@ -1,3 +1,11 @@
+/*
+ * @Author: your name
+ * @Date: 2021-06-27 14:10:57
+ * @LastEditTime: 2021-06-27 23:08:12
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: /realworld-nuxtjs/nuxt.config.js
+ */
 export default {
   server: {
     port: 3333 // 默认: 3000

@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 18:02:21
- * @LastEditTime: 2021-06-23 10:22:31
- * @LastEditors: lunarJan
+ * @LastEditTime: 2021-06-27 21:48:15
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/store/index.js
  */

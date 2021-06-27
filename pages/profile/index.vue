@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-20 14:43:21
- * @LastEditTime: 2021-06-20 20:12:29
- * @LastEditors: your name
+ * @LastEditTime: 2021-06-28 00:27:40
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/profile/index.vue
 -->
@@ -17,13 +17,20 @@
             <p>{{ profile.bio }}</p>
             <button
               class="btn btn-sm btn-outline-secondary action-btn"
+              v-if="profile.username !== user.username"
               @click="onFollow(profile)"
-              :disabled="profile.username === user.username"
             >
               <i class="ion-plus-round"></i>
               &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
               {{ profile.username }}
             </button>
+            <nuxt-link
+              class="btn btn-sm btn-outline-secondary action-btn"
+              v-else
+              to="/settings"
+            >
+              <i class="ion-gear-a"></i> Edit Profile Settings
+            </nuxt-link>
           </div>
         </div>
       </div>

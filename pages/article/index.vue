@@ -2,7 +2,7 @@
   <div class="article-page">
     <div class="banner">
       <div class="container">
-        <h1>How to build webapps that scale</h1>
+        <h1>{{ article.title }}</h1>
 
         <ArticleMeta :article="article"></ArticleMeta>
       </div>
@@ -32,10 +32,7 @@
               ></textarea>
             </div>
             <div class="card-footer">
-              <img
-                :src="user.image"
-                class="comment-author-img"
-              />
+              <img :src="user.image" class="comment-author-img" />
               <button class="btn btn-sm btn-primary" @click="addComments">
                 Post Comment
               </button>
@@ -65,7 +62,7 @@ export default {
     }
   },
   computed: {
-      ...mapState(['user'])
+    ...mapState(['user'])
   },
   async asyncData({
     isDev,

@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-19 15:14:49
- * @LastEditTime: 2021-06-24 13:13:39
- * @LastEditors: lunarJan
+ * @LastEditTime: 2021-06-27 16:23:36
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/home/index.vue
 -->
@@ -202,7 +202,14 @@ export default {
       getTags()
     ])
     const { articles, articlesCount } = articleRes.data
-    const { tags } = tagRes.data
+    let { tags } = tagRes.data
+    // console.log('encodeURI', encodeURI(tags[0]))
+    const xx = decodeURI('%E2%80%8C')
+    const reg = new RegExp(xx, 'g')
+    tags = tags.map(tag => tag.replace(reg, '')).filter(tag => tag.length)
+    // 去重
+    tags = new Set(tags)
+    // console.log('tags-----', tags)
     articles.forEach(article => {
         article.loadingArticle = false
     })

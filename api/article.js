@@ -1,8 +1,8 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 20:23:41
- * @LastEditTime: 2021-06-24 15:13:27
- * @LastEditors: lunarJan
+ * @LastEditTime: 2021-06-27 23:16:48
+ * @LastEditors: Please set LastEditors
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/api/article.js
  */
@@ -56,6 +56,29 @@ export const getArticleDeatil  = slug => {
         url: `/api/articles/${slug}`,
     })
 }
+// 新增文章
+export const createArticle  = data => {
+    return request({
+        method: 'POST',
+        url: '/api/articles',
+        data
+    })
+}
+// 更新文章内容
+export const updateArticle  = ({slug, data}) => {
+    return request({
+        method: 'PUT',
+        url: `/api/articles/${slug}`,
+        data
+    })
+}
+// 删除文章
+export const deleteArticle  = slug => {
+    return request({
+        method: 'DELETE',
+        url: `/api/articles/${slug}`,
+    })
+}
 // 新增文章评论
 export const addArticleComments  = ({slug, data}) => {
     return request({
@@ -68,6 +91,13 @@ export const addArticleComments  = ({slug, data}) => {
 export const getArticleComments  = slug => {
     return request({
         method: 'GET',
+        url: `/api/articles/${slug}/comments`,
+    })
+}
+// 删除文章评论
+export const deleteArticleComments  = slug => {
+    return request({
+        method: 'DELETE',
         url: `/api/articles/${slug}/comments`,
     })
 }
