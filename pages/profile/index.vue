@@ -12,15 +12,17 @@
       <div class="container">
         <div class="row">
           <div class="col-xs-12 col-md-10 offset-md-1">
-            <img src="http://i.imgur.com/Qr71crq.jpg" class="user-img" />
-            <h4>Eric Simons</h4>
-            <p>
-              Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda
-              looks like Peeta from the Hunger Games
-            </p>
-            <button class="btn btn-sm btn-outline-secondary action-btn">
+            <img :src="profile.image" class="user-img" />
+            <h4>{{ profile.username }}</h4>
+            <p>{{ profile.bio }}</p>
+            <button
+              class="btn btn-sm btn-outline-secondary action-btn"
+              @click="onFollow(profile)"
+              :disabled="profile.username === user.username"
+            >
               <i class="ion-plus-round"></i>
-              &nbsp; Follow Eric Simons
+              &nbsp; {{ profile.following ? 'Unfollow' : 'Follow' }}
+              {{ profile.username }}
             </button>
           </div>
         </div>
@@ -33,55 +35,94 @@
           <div class="articles-toggle">
             <ul class="nav nav-pills outline-active">
               <li class="nav-item">
-                <a class="nav-link active" href="">My Articles</a>
+                <nuxt-link
+                  class="nav-link disabled"
+                  :class="{ active: tab === 'my' }"
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      userId: profile.username,
+                      tab: 'my'
+                    }
+                  }"
+                  exact
+                  >My Articles</nuxt-link
+                >
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="">Favorited Articles</a>
+                <nuxt-link
+                  class="nav-link"
+                  :class="{ active: tab === 'favorite' }"
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      userId: profile.username
+                    },
+                    query: {
+                      tab: 'favorite'
+                    }
+                  }"
+                  exact
+                  >Favorited Articles</nuxt-link
+                >
               </li>
             </ul>
           </div>
 
-          <div class="article-preview">
+          <div
+            class="article-preview"
+            v-for="article in articles"
+            :key="article.slug"
+          >
             <div class="article-meta">
-              <a href=""><img src="http://i.imgur.com/Qr71crq.jpg"/></a>
+              <nuxt-link
+                :to="{
+                  name: 'profile',
+                  params: {
+                    userId: article.author.username
+                  }
+                }"
+              >
+                <img :src="article.author.image" />
+              </nuxt-link>
               <div class="info">
-                <a href="" class="author">Eric Simons</a>
-                <span class="date">January 20th</span>
+                <nuxt-link
+                  :to="{
+                    name: 'profile',
+                    params: {
+                      userId: article.author.username
+                    }
+                  }"
+                  class="author"
+                  >{{ article.author.username }}</nuxt-link
+                >
+                <span class="date">{{
+                  article.createdAt | date('MMM DD, YYYY')
+                }}</span>
               </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 29
+              <button
+                class="btn btn-outline-primary btn-sm pull-xs-right"
+                :class="{ active: article.favorited }"
+                @click="onFavorite(article)"
+                :disabled="article.loadingArticle"
+              >
+                <i class="ion-heart"></i> {{ article.favoritesCount }}
               </button>
             </div>
-            <a href="" class="preview-link">
-              <h1>How to build webapps that scale</h1>
-              <p>This is the description for the post.</p>
+            <nuxt-link
+              href=""
+              class="preview-link"
+              :to="{
+                name: 'article',
+                params: {
+                  slug: article.slug
+                }
+              }"
+            >
+              <h1>{{ article.title }}</h1>
+              <p>{{ article.description }}</p>
               <span>Read more...</span>
-            </a>
-          </div>
-
-          <div class="article-preview">
-            <div class="article-meta">
-              <a href=""><img src="http://i.imgur.com/N4VcUeJ.jpg"/></a>
-              <div class="info">
-                <a href="" class="author">Albert Pai</a>
-                <span class="date">January 20th</span>
-              </div>
-              <button class="btn btn-outline-primary btn-sm pull-xs-right">
-                <i class="ion-heart"></i> 32
-              </button>
-            </div>
-            <a href="" class="preview-link">
-              <h1>
-                The song you won't ever stop singing. No matter how hard you
-                try.
-              </h1>
-              <p>This is the description for the post.</p>
-              <span>Read more...</span>
-              <ul class="tag-list">
-                <li class="tag-default tag-pill tag-outline">Music</li>
-                <li class="tag-default tag-pill tag-outline">Song</li>
-              </ul>
-            </a>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -90,10 +131,66 @@
 </template>
 
 <script>
+import { getArticles, setFavorite, unFavorite } from '@/api/article'
+import { getUserDetail, followUser, unfollowUser } from '@/api/user'
+import { mapState } from 'vuex'
+
 export default {
   middleware: 'authenticated', // 在路由匹配组件渲染之前会先执行中间件处理，如果有多个中间件可以写成数组的形式
-
-    name: 'UserProfile'
+  name: 'UserProfile',
+  watchQuery: ['tab'],
+  computed: {
+    ...mapState(['user'])
+  },
+  async asyncData({ params, query }) {
+    const { userId } = params
+    const tab = query.tab || 'my'
+    let param = { author: userId }
+    if (tab === 'favorite') {
+      param.favorited = userId
+    }
+    const { data: userData } = await getUserDetail(userId)
+    const { profile } = userData
+    const { data } = await getArticles(param)
+    const { articles, articlesCount } = data
+    articles.forEach(article => {
+      article.loadingArticle = false
+    })
+    return {
+      articles,
+      articlesCount,
+      tab,
+      profile
+    }
+  },
+  methods: {
+    // 点赞/取消点赞
+    async onFavorite(article) {
+      article.loadingArticle = true
+      console.log(article)
+      if (article.favorited) {
+        await unFavorite(article.slug)
+        article.favorited = false
+        article.favoritesCount -= 1
+      } else {
+        await setFavorite(article.slug)
+        article.favorited = true
+        article.favoritesCount += 1
+      }
+      article.loadingArticle = false
+    },
+    // 关注/取消关注
+    async onFollow(userInfo) {
+      if (userInfo.username === this.user.username) return
+      if (userInfo.following) {
+        await unfollowUser(userInfo.username)
+        userInfo.following = false
+      } else {
+        await followUser(userInfo.username)
+        userInfo.following = true
+      }
+    }
+  }
 }
 </script>
 
