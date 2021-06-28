@@ -1,12 +1,12 @@
 /*
  * @Author: your name
  * @Date: 2021-06-20 18:02:21
- * @LastEditTime: 2021-06-27 21:48:15
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-28 15:53:11
+ * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/store/index.js
  */
-const cookieParser  = process.server ? require('cookieParser') : undefined;
+const cookieParser  = process.server ? require('cookieparser') : undefined;
 // 在服务端渲染期间运行的都是同一个实例
 // 为了防止数据冲突，务必把state定义成一个函数，返回数据对象
 export const state = () => {
