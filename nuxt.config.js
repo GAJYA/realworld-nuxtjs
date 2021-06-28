@@ -1,17 +1,18 @@
 /*
  * @Author: your name
  * @Date: 2021-06-27 14:10:57
- * @LastEditTime: 2021-06-27 23:08:12
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-28 11:39:05
+ * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/nuxt.config.js
  */
 export default {
   server: {
+    host: '0.0.0.0', // 会监听所有的网口地址
     port: 3333 // 默认: 3000
   },
   // SEO优化配置
-  
+
   router: {
     linkActiveClass: 'active',
     // 自定义路由表规则
