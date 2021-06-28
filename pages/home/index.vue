@@ -1,8 +1,8 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-19 15:14:49
- * @LastEditTime: 2021-06-27 16:23:36
- * @LastEditors: Please set LastEditors
+ * @LastEditTime: 2021-06-28 15:09:17
+ * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/home/index.vue
 -->
@@ -10,7 +10,7 @@
   <div class="home-page">
     <div class="banner">
       <div class="container">
-        <h1 class="logo-font">conduit</h1>
+        <h1 class="logo-font">whyyyyyyyyyyyyyyy</h1>
         <p>A place to share your knowledge.</p>
       </div>
     </div>
