@@ -1,7 +1,7 @@
 <!--
  * @Author: your name
  * @Date: 2021-06-19 15:14:49
- * @LastEditTime: 2021-06-28 15:09:17
+ * @LastEditTime: 2021-06-28 16:24:45
  * @LastEditors: lunarJan
  * @Description: In User Settings Edit
  * @FilePath: /realworld-nuxtjs/pages/home/index.vue
@@ -22,7 +22,7 @@
             <ul class="nav nav-pills outline-active">
               <li v-if="user" class="nav-item">
                 <nuxt-link
-                  class="nav-link disabled"
+                  class="nav-link"
                   :class="{ active: tab === 'your_feed' }"
                   :to="{
                     name: 'home',
